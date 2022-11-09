@@ -21,6 +21,7 @@ def get_message():
     
     return message
 
+
 def create_new_piece(pieces_models, x, y):
     """Create a new piece in the top left corner
 
@@ -36,10 +37,11 @@ def create_new_piece(pieces_models, x, y):
 
     """
 
-    piece = pieces_models[random.randint(0, len(pieces_models) - 1)]
-    piece["pos_x"] = x
-    piece["pos_y"] = y
-    return piece
+    new_piece = pieces_models[random.randint(0, len(pieces_models) - 1)]
+    new_piece["pos_x"] = x
+    new_piece["pos_y"] = y
+
+    return new_piece
 
 
 def collides_checker(board, piece, x_board, y_board):
@@ -65,6 +67,7 @@ def collides_checker(board, piece, x_board, y_board):
     #       if the element of the piece is 1 and the element of the board is 0 or
     #           the element of the piece is 0 and the element of the board is 1 the result will be 0
     #       if the element of the piece is 1 and the element of the board is 1 the result will be 1
+    #   if the result is 1 there's a collision
     for y in range(piece["height"]):
         for x in range(piece["width"]):
             if (piece["shape"][y][x] * board["shape"][y_board + y][x_board + x]) == 1:
@@ -138,8 +141,11 @@ def execute_order(order, nb_dropped_pieces):
 
     is_dropped = False
 
+    # move order
     if split_order[0] == "move":
         move_piece(board, piece, split_order[1])
+
+    # drop order
     elif split_order[0] == "drop":
         drop_piece(board, piece)
         nb_dropped_pieces += 1
